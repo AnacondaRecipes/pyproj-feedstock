@@ -5,18 +5,29 @@ package:
   version: {{ version }}
 
 source:
-  fn: pyproj-{{ version }}.tar.gz
-  url: https://github.com/jswhit/pyproj/archive/v{{ version }}rel.tar.gz
-  sha256: 0e19f02ebbf4c253813142ffe06e12489f3861877c3fab75b6c769c1a1960cac
+  git_url: https://github.com/jswhit/pyproj
+  git_tag: v{{ version }}rel
 
 build:
-  number: 0
-  script: python setup.py install --single-version-externally-managed --record=record.txt
+  number: 1
+  script: rm _proj.c && cythonize -a -i _proj.pyx && PROJ_DIR=${PREFIX} CFLAGS="${CFLAGS} -Wno-strict-prototypes -Wdeprecated-declarations" python setup.py install --single-version-externally-managed --record=record.txt  # [unix]
+  script:
+    - del _proj.c  # [win]
+    - set "PROJ_DIR=%PREFIX%"  # [win]
+    - rm -d _proj.c  # [unix]
+    - export PROJ_DIR="${PREFIX}"  # [unix]
+    - export CFLAGS="${CFLAGS} -Wno-strict-prototypes -Wdeprecated-declarations"  # [win]
+    - cythonize -a -i _proj.pyx
+    - python setup.py install --single-version-externally-managed --record=record.txt
 
 requirements:
   build:
+    - {{ compiler('c') }}
+  host:
     - python
     - setuptools
+    - cython
+    - proj4
   run:
     - python
     - numpy
@@ -32,4 +43,5 @@ about:
 
 extra:
   recipe-maintainers:
+    - mingwandroid
     - ocefpaf
