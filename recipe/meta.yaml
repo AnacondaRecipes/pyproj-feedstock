@@ -10,7 +10,6 @@ source:
 
 build:
   number: 1
-  script: rm _proj.c && cythonize -a -i _proj.pyx && PROJ_DIR=${PREFIX} CFLAGS="${CFLAGS} -Wno-strict-prototypes -Wdeprecated-declarations" python setup.py install --single-version-externally-managed --record=record.txt  # [unix]
   script:
     - del _proj.c  # [win]
     - set "PROJ_DIR=%PREFIX%"  # [win]
