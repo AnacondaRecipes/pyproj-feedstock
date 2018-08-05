@@ -11,11 +11,12 @@ source:
 build:
   number: 1
   script:
-    - del _proj.c  # [win]
-    - set "PROJ_DIR=%PREFIX%"  # [win]
-    - rm -d _proj.c  # [unix]
-    - export PROJ_DIR="${PREFIX}"  # [unix]
-    - export CFLAGS="${CFLAGS} -Wno-strict-prototypes -Wdeprecated-declarations"  # [win]
+    - del _proj.c                         # [win]
+    - set "PROJ_DIR=%PREFIX%"             # [win]
+    - set "PROJ_LIBDIR=%LIBRARY_LIB%"     # [win]
+    - set "PROJ_INCDIR=%LIBRARY_INC%"     # [win]
+    - rm -d _proj.c                       # [unix]
+    - export PROJ_DIR="${PREFIX}"         # [unix]
     - cythonize -a -i _proj.pyx
     - python setup.py install --single-version-externally-managed --record=record.txt
 
