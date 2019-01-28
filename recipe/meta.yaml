@@ -1,4 +1,4 @@
-{% set version = "1.9.5.1" %}
+{% set version = "1.9.6" %}
 
 package:
   name: pyproj
@@ -9,13 +9,11 @@ source:
   git_tag: v{{ version }}rel
 
 build:
-  number: 1
+  number: 0
   script:
-    - del _proj.c                         # [win]
     - set "PROJ_DIR=%PREFIX%"             # [win]
     - set "PROJ_LIBDIR=%LIBRARY_LIB%"     # [win]
     - set "PROJ_INCDIR=%LIBRARY_INC%"     # [win]
-    - rm -d _proj.c                       # [unix]
     - export PROJ_DIR="${PREFIX}"         # [unix]
     - cythonize -a -i _proj.pyx
     - python setup.py install --single-version-externally-managed --record=record.txt
