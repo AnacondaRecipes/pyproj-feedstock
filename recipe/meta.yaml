@@ -25,7 +25,7 @@ requirements:
     - {{ compiler('c') }}
     - patch               # [not win]
     - m2-patch            # [win]
-host:
+  host:
     - python
     - pip
     - setuptools
@@ -59,7 +59,6 @@ about:
 
 extra:
   recipe-maintainers:
-    - mingwandroid
     - ocefpaf
     - snowman2
     - jorisvandenbossche
