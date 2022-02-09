@@ -1,4 +1,9 @@
-{% set version = "3.1.0" %}
+{% set version = "3.3.0" %}
+# `setup.py` requires `proj >=8.0.0`, but s we don't test against it
+# and - other than `8.0.1` in `linux-64` - we ONLY have `8.2.1` in our
+# repo.
+{% set proj_min = "8.2.1" %}
+
 
 package:
   name: pyproj
@@ -6,13 +11,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/p/pyproj/pyproj-{{ version }}.tar.gz
-  sha256: 67b94f4e694ae33fc90dfb7da0e6b5ed5f671dd0acc2f6cf46e9c39d56e16e1a
-  patches:
-    - 0001-TST-Adjust-geometry_area_perimeter-docstring-test-se.patch
+  sha256: ce8bfbc212729e9a643f5f5d77f7a93394e032eda1e2d8799ae902d08add747e
 
 build:
-  number: 4
-  skip: true  # [py<37]
+  number: 0
+  skip: true  # [py<38]
+  skip: true  # [win32] proj dependency isn't built for win32 right now.
   entry_points:
     - pyproj=pyproj.__main__:main
   script:
@@ -23,39 +27,45 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - patch               # [not win]
-    - m2-patch            # [win]
   host:
     - python
     - pip
     - setuptools
     - wheel
-    - cython
-    - proj
+    - cython >=0.28.4
+    - proj >={{ proj_min }}
   run:
     - python
-    - proj
+    - proj >={{ proj_min }}
     - certifi
 
 test:
+  # NOTE to future maintainers: Reenable full testing when pandas is available for python 3.10.
   source_files:
     - test
   requires:
     - pytest
-    - shapely
+    - shapely  # [not osx or py<=39]
     - numpy
-    - pandas
-    - xarray
+    - pandas  # [not ((linux64 or win) and py==310)]  Not available for python 3.10 right now for win or lin 64
+    - xarray  # [not ((linux64 or win) and py==310)] Depends on pandas
   imports:
     - pyproj
   commands:
     - pyproj --verbose
-    - pytest -v -s
+    - pytest -v -s  # [not ((linux64 or win) and py==310)]  Disable until pandas is available.
+
 about:
   home: https://github.com/pyproj4/pyproj
   license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: Python interface to PROJ library
+  dev_url: https://github.com/pyproj4/pyproj
+  #doc_url: https://pyproj4.github.io/pyproj/{{ version }}
+  #doc_src_url: https://github.com/pyproj4/pyproj/tree/{{ version }}/docs
+  doc_url: https://pyproj4.github.io/pyproj/
+  doc_src_url: https://github.com/pyproj4/pyproj/tree/main/docs
 
 extra:
   recipe-maintainers:
