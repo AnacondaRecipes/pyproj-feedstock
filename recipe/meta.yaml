@@ -45,15 +45,15 @@ test:
     - test
   requires:
     - pytest
-    - shapely  # [not osx or py<=39]
+    - shapely  # [(not osx or py<=39) and (not s390x)]
     - numpy
-    - pandas  # [not ((linux64 or win) and py==310)]  Not available for python 3.10 right now for win or lin 64
-    - xarray  # [not ((linux64 or win) and py==310)] Depends on pandas
+    - pandas  # [py<310 or (not osx)]  Not available for python 3.10 right now for win or lin 64
+    - xarray  # [py<310 or (not osx)] Depends on pandas
   imports:
     - pyproj
   commands:
     - pyproj --verbose
-    - pytest -v -s  # [not ((linux64 or win) and py==310)]  Disable until pandas is available.
+    - pytest -v -s  # [py<310 or (not osx)]  Disable until pandas is available.
 
 about:
   home: https://github.com/pyproj4/pyproj
