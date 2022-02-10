@@ -53,7 +53,8 @@ test:
     - pyproj
   commands:
     - pyproj --verbose
-    - pytest -v -s  # [py<310 or osx]  Disable until pandas is available.
+    - pyproj --help  # [not(py<310 or osx)]  Remove after pandas is available.
+    - pytest -v -s   # [py<310 or osx]  Disable until pandas is available.
 
 about:
   home: https://github.com/pyproj4/pyproj
