@@ -1,4 +1,4 @@
-{% set version = "3.3.0" %}
+{% set version = "3.4.1" %}
 # `setup.py` requires `proj >=8.0.0`, but s we don't test against it
 # and - other than `8.0.1` in `linux-64` - we ONLY have `8.2.1` in our
 # repo.
@@ -11,7 +11,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/p/pyproj/pyproj-{{ version }}.tar.gz
-  sha256: ce8bfbc212729e9a643f5f5d77f7a93394e032eda1e2d8799ae902d08add747e
+  sha256: 261eb29b1d55b1eb7f336127344d9b31284d950a9446d1e0d1c2411f7dd8e3ac
 
 build:
   number: 0
