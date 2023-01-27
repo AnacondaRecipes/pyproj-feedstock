@@ -41,15 +41,18 @@ requirements:
 test:
   source_files:
     - test
+  # Imports are in run_test.py
+  #imports:
+    #- pyproj
   requires:
     - pytest
     - shapely  # [not s390x]
     - numpy
     - pandas
     - xarray
-  imports:
-    - pyproj
+    - pip
   commands:
+    - pip check
     - pyproj --verbose
     - pyproj --help
     - pytest -v -s
