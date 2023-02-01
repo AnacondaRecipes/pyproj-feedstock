@@ -28,7 +28,7 @@ requirements:
     - {{ compiler('c') }}
   host:
     - python
-    - cython =0.28.4
+    - cython
     - pip
     - proj ={{ proj_min }}
     - setuptools
