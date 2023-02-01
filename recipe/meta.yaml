@@ -30,7 +30,7 @@ requirements:
     - python
     - cython
     - pip
-    - proj >={{ proj_min }}
+    - proj ={{ proj_min }}
     - setuptools
     - wheel
   run:
