@@ -1,9 +1,4 @@
-{% set version = "3.4.1" %}
-# `setup.py` requires `proj >=8.0.0`, but s we don't test against it
-# and - other than `8.0.1` in `linux-64` - we ONLY have `8.2.1` in our
-# repo.
-{% set proj_min = "8.2.1" %}
-
+{% set version = "3.6.1" %}
 
 package:
   name: pyproj
@@ -11,15 +6,15 @@ package:
 
 source:
   url: https://pypi.io/packages/source/p/pyproj/pyproj-{{ version }}.tar.gz
-  sha256: 261eb29b1d55b1eb7f336127344d9b31284d950a9446d1e0d1c2411f7dd8e3ac
+  sha256: 44aa7c704c2b7d8fb3d483bbf75af6cb2350d30a63b144279a09b75fead501bf
 
 build:
   number: 0
-  skip: true  # [py<38]
+  skip: true  # [py<39]
   script_env:
     - PROJ_VERSION={{ proj }}
   script:
-    - {{ PYTHON }} -m pip install . --no-deps -vv
+    - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   entry_points:
     - pyproj=pyproj.__main__:main
 
@@ -28,35 +23,36 @@ requirements:
     - {{ compiler('c') }}
   host:
     - python
-    - cython
+    - cython >=3
     - pip
-    - proj ={{ proj_min }}
+    - proj {{ proj }}
     - setuptools
     - wheel
   run:
     - python
     - certifi
-    - proj >={{ proj_min }}
+    - proj # bounds through run_exports.
 
 test:
   source_files:
     - test
+    - pytest.ini
   # Imports are in run_test.py
   #imports:
     #- pyproj
   requires:
+    - packaging
     - pytest
-    - shapely  # [not s390x]
     - numpy
     - pandas
+    - shapely # [not s390x]
     - xarray
     - pip
   commands:
     - pip check
     - pyproj --verbose
     - pyproj --help
-    # Skip tests that fail with AccertionError:
-    - pytest -v -s -k "not (test_get_transform_grid_list__bbox__antimeridian or test_get_transform_grid_list__bbox__out_of_bounds)"
+    - pytest -v -s -m "not network" -m "not slow"
 
 about:
   home: https://github.com/pyproj4/pyproj
