@@ -1,16 +1,16 @@
-{% set version = "3.6.1" %}
+{% set version = "3.7.2" %}
 
 package:
   name: pyproj
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/p/pyproj/pyproj-{{ version }}.tar.gz
-  sha256: 44aa7c704c2b7d8fb3d483bbf75af6cb2350d30a63b144279a09b75fead501bf
+  url: https://pypi.org/packages/source/p/pyproj/pyproj-{{ version }}.tar.gz
+  sha256: 39a0cf1ecc7e282d1d30f36594ebd55c9fae1fda8a2622cee5d100430628f88c
 
 build:
-  number: 1
-  skip: true  # [py<39]
+  number: 0
+  skip: true  # [py<311]
   script_env:
     - PROJ_VERSION={{ proj }}
   script:
@@ -23,29 +23,29 @@ requirements:
     - {{ compiler('c') }}
   host:
     - python
-    - cython >=3
+    - cython >=3.1
     - pip
     - proj {{ proj }}
-    - setuptools
+    - setuptools >=61.0.0
     - wheel
   run:
     - python
     - certifi
-    - proj # bounds through run_exports.
+    - proj  # bounds through run_exports.
 
 test:
   source_files:
     - test
     - pytest.ini
   # Imports are in run_test.py
-  #imports:
-    #- pyproj
+  <conda_recipe_manager.types.SentinelType object at 0x7fdc49290440>:  #imports:
+  #- pyproj
   requires:
     - packaging
     - pytest
     - numpy
     - pandas
-    - shapely # [not s390x]
+    - shapely  # [not s390x]
     - xarray
     - pip
   commands:
