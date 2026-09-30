@@ -1,9 +1,6 @@
 {% set name = "pyproj" %}
 {% set version = "3.8.0" %}
-{% set deselect_tests = " --deselect=test/crs/test_crs.py::test_datum_horizontal" %}
-{% set deselect_tests = 'deselect_tests + " --deselect=test/crs/test_crs.py::test_sub_crs"' %}
 
-# Assertion errors
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -35,15 +32,19 @@ requirements:
   run:
     - python
     - certifi
-    - proj  # bounds through run_exports.
+    - proj # bounds through run_exports.
+
+# Assertion errors
+{% set deselect_tests = " --deselect=test/crs/test_crs.py::test_datum_horizontal" %}
+{% set deselect_tests = deselect_tests + " --deselect=test/crs/test_crs.py::test_sub_crs" %}
 
 test:
   source_files:
     - test
     - pytest.ini
   # Imports are in run_test.py
-  <conda_recipe_manager.types.SentinelType object at 0x7f31fdd92270>:  #imports:
-  #- pyproj
+  #imports:
+    #- pyproj
   requires:
     - packaging
     - pytest
