@@ -1,5 +1,5 @@
 {% set name = "pyproj" %}
-{% set version = "3.7.2" %}
+{% set version = "3.8.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 39a0cf1ecc7e282d1d30f36594ebd55c9fae1fda8a2622cee5d100430628f88c
+  sha256: efa59725bba68bf97fa808b61302df32934acdceb6a5c92a8dd0e71dc266a876
 
 build:
   number: 0
-  skip: true  # [py<311]
+  skip: true  # [py<312]
   script_env:
     - PROJ_VERSION={{ proj }}
   script:
@@ -28,8 +28,7 @@ requirements:
     - python
     - cython >=3.1
     - proj {{ proj }}
-    - setuptools >=61.0.0
-    - wheel
+    - setuptools >=77.0.1
   run:
     - python
     - certifi
